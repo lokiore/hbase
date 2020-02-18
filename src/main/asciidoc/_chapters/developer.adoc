@@ -1724,7 +1724,7 @@ HBase ships with several ChaosMonkey policies, available in the
 ChaosMonkey integration tests can be configured per test run.
 Create a Java properties file in the HBase CLASSPATH and pass it to ChaosMonkey using
 the `-monkeyProps` configuration flag. Configurable properties, along with their default
-values if applicable, are listed in the `org.apache.hadoop.hbase.chaos.factories.MonkeyConstants`
+values if applicable, are listed in the `MonkeyConstants`
 class. For properties that have defaults, you can override them by including them
 in your properties file.
 

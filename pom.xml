@@ -76,6 +76,7 @@
     <module>hbase-common</module>
     <module>hbase-procedure</module>
     <module>hbase-endpoint</module>
+    <module>hbase-chaos</module>
     <module>hbase-it</module>
     <module>hbase-examples</module>
     <module>hbase-assembly</module>
@@ -1556,6 +1557,7 @@
     <server.test.jar>hbase-server-${project.version}-tests.jar</server.test.jar>
     <common.test.jar>hbase-common-${project.version}-tests.jar</common.test.jar>
     <procedure.test.jar>hbase-procedure-${project.version}-tests.jar</procedure.test.jar>
+    <chaos.test.jar>hbase-chaos-${project.version}.jar</chaos.test.jar>
     <it.test.jar>hbase-it-${project.version}-tests.jar</it.test.jar>
     <annotations.test.jar>hbase-annotations-${project.version}-tests.jar</annotations.test.jar>
     <rsgroup.test.jar>hbase-rsgroup-${project.version}-tests.jar</rsgroup.test.jar>
@@ -1785,6 +1787,11 @@
       <dependency>
         <groupId>org.apache.hbase</groupId>
         <artifactId>hbase-external-blockcache</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <artifactId>hbase-chaos</artifactId>
+        <groupId>org.apache.hbase</groupId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

@@ -27,9 +27,9 @@
     <relativePath>../hbase-build-configuration</relativePath>
   </parent>
 
-  <artifactId>hbase-it</artifactId>
-  <name>Apache HBase - Integration Tests</name>
-  <description>Integration and System tests for HBase</description>
+  <artifactId>hbase-chaos</artifactId>
+  <name>Apache HBase - Chaos Tests</name>
+  <description>Chaos tests for HBase</description>
 
   <properties>
     <!-- Test inclusion patterns used by failsafe configuration -->
@@ -110,14 +110,9 @@
             </execution>
           </executions>
         </plugin>
-      </plugins>
-    </pluginManagement>
-
-    <plugins>
-      <!--  Run integration tests with mvn verify -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
           <configuration>
             <skip>false</skip>
             <forkMode>always</forkMode>
@@ -125,15 +120,17 @@
                  I believe it is a failsafe bug, we may consider using surefire -->
             <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
             <argLine>-enableassertions -Xmx${failsafe.Xmx}
-                -Djava.security.egd=file:/dev/./urandom -XX:+CMSClassUnloadingEnabled
-                -verbose:gc -XX:+PrintCommandLineFlags  -XX:+PrintFlagsFinal</argLine>
+              -Djava.security.egd=file:/dev/./urandom -XX:+CMSClassUnloadingEnabled
+              -verbose:gc -XX:+PrintCommandLineFlags  -XX:+PrintFlagsFinal</argLine>
           </configuration>
-      </plugin>
-      <plugin>
-        <groupId>net.revelc.code</groupId>
-        <artifactId>warbucks-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
+        </plugin>
+        <plugin>
+          <groupId>net.revelc.code</groupId>
+          <artifactId>warbucks-maven-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
   </build>
 
   <dependencies>
@@ -142,11 +139,6 @@
          Jersey-core has implemented version 1
          Interfaces of what is in this dependency
          which does version 2.-->
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>javax.ws.rs-api</artifactId>
-      <scope>test</scope>
-    </dependency>
 	<!-- Intra-project dependencies -->
     <dependency>
       <groupId>org.apache.hbase</groupId>
@@ -155,9 +147,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase-common</artifactId>
-      <type>jar</type>
+      <groupId>net.revelc.code</groupId>
+      <artifactId>warbucks-maven-plugin</artifactId>
+      <version>1.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hbase</groupId>
@@ -173,27 +165,59 @@
     </dependency>
     <dependency>
       <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase-mapreduce</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase-mapreduce</artifactId>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase-rsgroup</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase-rsgroup</artifactId>
-      <type>test-jar</type>
-      <scope>test</scope>
+      <artifactId>hbase-server</artifactId>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hbase</groupId>
       <artifactId>hbase-server</artifactId>
+      <type>test-jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-zookeeper</artifactId>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-zookeeper</artifactId>
+      <type>test-jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-common</artifactId>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-common</artifactId>
+      <type>test-jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-mapreduce</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-mapreduce</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-rsgroup</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-rsgroup</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hbase</groupId>
@@ -238,10 +262,6 @@
       <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase-chaos</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.apache.htrace</groupId>
       <artifactId>htrace-core4</artifactId>
     </dependency>
@@ -267,9 +287,13 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.mockito</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <groupId>javax.ws.rs</groupId>
+    </dependency>
+    <dependency>
       <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
+      <groupId>org.mockito</groupId>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
